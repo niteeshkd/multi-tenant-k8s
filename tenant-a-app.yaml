@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tenant-a-agent-runtime
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/niteeshkd/multi-tenant-k8s.git'
+    targetRevision: HEAD
+    path: agent-runtime
+    helm:
+      valueFiles:
+        - values-tenant-a.yaml
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: tenant-a-ns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
